@@ -1,12 +1,15 @@
 express = require("express")
 app = express()
 path = require("path")
+methodOverride = require("method-override");
 let port = 8080;
 
 app.use(express.urlencoded({extented : true}));
 app.set("view engine" , "ejs");
 app.set("views" , path.join(__dirname , "views"));
 app.use(express.static(path.join(__dirname , "public")));
+app.use(methodOverride("_method"));
+
 const { v4 : uuidv4 } = require("uuid");
 // uuidv4();
 
@@ -54,6 +57,27 @@ app.post("/posts" , (req , res) => {
     posts.push({id , username , content});
     res.redirect("/posts"); // Yeh internally get method ke sath hi jayega /posts mai.
 })
+
+app.get("/posts/:id/edit" , (req , res) => {
+    let {id} = req.params;
+    let post = posts.find((p) => id == p.id);
+    res.render("edit.ejs" , post);
+})
+
+app.patch("/posts/:id" , (req , res) => {
+    let {id} = req.params;
+    let post = posts.find((p) => id == p.id);
+    let newContent = req.body.content;
+    post.content = newContent;
+    res.redirect("/posts");
+})
+
+app.delete("/posts/:id" , (req , res) => {
+    let {id} = req.params;
+    posts = posts.filter((p) => id != p.id)
+    res.redirect("/posts");
+})
+
 
 app.listen(port , (req , res) => {
     console.log("App is listening on port 8080");
