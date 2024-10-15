@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Posts Website</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
     <h1>Quora Posts</h1>
@@ -14,6 +14,8 @@
         <div class="post">
             <h2 class="user"> <%= post.username %> </h2> <br> <br>
             <h4 class="content"> <%= post.content %> </h4>
+            <br>
+            <a href="http://localhost:8080/posts/<%= post.id %>">Show Details</a>
         </div>
 
     <% } %>
